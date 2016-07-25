@@ -2,6 +2,8 @@
 
 Like a slider input, but round. For finer grained control over large ranges.
 
+This component is 100% JS and compatible with both Android and iOS.
+
 ## props
 
 * **minimumValue** - *PropTypes.number*: the minimum selectable value
@@ -47,3 +49,15 @@ class SampleApp extends Component {
 
 AppRegistry.registerComponent('SampleApp', () => SampleApp);
 ```
+
+## future enhancements
+
+Pull requests are welcome.
+
+* set step value like in Slider control
+* set range of 1 revolution
+* don't allow oversliding more than 1 revolution past min/max
+* add `mode` prop to swap between 'dial' and 'circular-slider'
+* ability to customize styles
+* more native looking default styles for android?
+* onslidingbegin?
