@@ -1,14 +1,8 @@
 'use strict';
 import React, { PropTypes, Component } from 'react';
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View,
-  PanResponder
-} from 'react-native';
+import { View, PanResponder } from 'react-native';
 const nativeMethodsMixin = require('NativeMethodsMixin');
-  
+
 const CircularSlider = React.createClass({
   getInitialState: function() {
     return {
