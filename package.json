@@ -1,0 +1,25 @@
+{
+  "name": "react-native-circular-slider",
+  "version": "0.0.1",
+  "description": "Like a slider input, but round. For finer grained control over large ranges.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CaleyD/react-native-circular-slider.git"
+  },
+  "keywords": [
+    "slider",
+    "react-native",
+    "round",
+    "input"
+  ],
+  "author": "Caley Davis",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CaleyD/react-native-circular-slider/issues"
+  },
+  "homepage": "https://github.com/CaleyD/react-native-circular-slider#readme"
+}
