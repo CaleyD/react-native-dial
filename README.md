@@ -54,10 +54,12 @@ AppRegistry.registerComponent('SampleApp', () => SampleApp);
 
 Pull requests are welcome.
 
+* add animated gif of example to readme
 * set step value like in Slider control
 * set range of 1 revolution
 * don't allow oversliding more than 1 revolution past min/max
 * add `mode` prop to swap between 'dial' and 'circular-slider'
+  * maybe allow custom renderer?
 * ability to customize styles
 * more native looking default styles for android?
 * onslidingbegin?
