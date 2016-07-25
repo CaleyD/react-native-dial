@@ -3,7 +3,7 @@ import React, { PropTypes, Component } from 'react';
 import { View, PanResponder } from 'react-native';
 const nativeMethodsMixin = require('NativeMethodsMixin');
 
-const CircularSlider = React.createClass({
+const Dial = React.createClass({
   getInitialState: function() {
     return {
   		angle: this.props.value,
@@ -134,17 +134,17 @@ const CircularSlider = React.createClass({
     );
   }
 });
-CircularSlider.propTypes = {
+Dial.propTypes = {
 	minimumValue: PropTypes.number,
   maximumValue: PropTypes.number,
   value: PropTypes.number,
   onValueChange: PropTypes.func,
   onSlidingComplete: PropTypes.func
 };
-CircularSlider.defaultProps = {
+Dial.defaultProps = {
 	minimumValue: -360,
   maximumValue: Number.MAX_VALUE,
   value: 0
 };
 
-export default CircularSlider;
+export default Dial;
