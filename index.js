@@ -1,3 +1,4 @@
 'use strict';
 import createDialComponent from './Dial.js';
-export createDialComponent(require('react/lib/NativeMethodsMixin'));
+const Dial = createDialComponent(require('react/lib/NativeMethodsMixin'));
+export default Dial;

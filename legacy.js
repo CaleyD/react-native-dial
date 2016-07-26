@@ -4,4 +4,5 @@ NOTE: This file is here to support older versions of react native where NativeMe
 is not available from 'react/lib/NativeMethodsMixin'
 */
 import createDialComponent from './Dial.js';
-export createDialComponent(require('NativeMethodsMixin'));
+const Dial = createDialComponent(require('NativeMethodsMixin'));
+export default Dial;

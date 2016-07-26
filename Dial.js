@@ -10,7 +10,7 @@ import { View, PanResponder } from 'react-native';
 //
 // We could probably hack out a solution that works with nested views and
 // layouts...
-export defualt function CreateDialComponent(NativeMethodsMixin) {
+export default function CreateDialComponent(NativeMethodsMixin) {
 
   const Dial = React.createClass({
     mixins: [NativeMethodsMixin],
