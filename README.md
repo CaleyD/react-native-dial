@@ -18,12 +18,15 @@ This component is 100% JS and compatible with both Android and iOS.
 
 `npm install react-native-dial --save`
 
-## sample usage
+
+## usage sample
+
+**IMPORTANT** If you are using an older version of React-Native import from `react-native-dial/legacy` (instead of `react-native-dial`) because the React Native team changed the API for accessing the NativeMethodsMixin module and the static packager doesn't support fallback or dynamic paths for loading modules.
 
 ```
 import React, { Component } from 'react';
 import { AppRegistry, Text, View } from 'react-native';
-import Dial from 'react-native-dial'
+import Dial from 'react-native-dial';
 
 class SampleApp extends Component {
   constructor(props) {
