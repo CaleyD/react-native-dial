@@ -11,6 +11,9 @@ This component is 100% JS and compatible with both Android and iOS.
 * **value** - *PropTypes.number*: the initial value
 * **onValueChange** - *PropTypes.func*:
   Callback continuously called while the user is interacting with the component.
+* **onSlidingBegin** - *PropTypes.func*:
+  Callback called when the user begins interacting with the component. This is a
+  good time to disable scrolling in a parent ScrollView.
 * **onSlidingComplete** - *PropTypes.func*:
   Callback called when the user finishes changing the value (e.g. when the component is released).
 
@@ -65,4 +68,3 @@ Pull requests are welcome.
   * maybe allow custom renderer?
 * ability to customize styles
 * more native looking default styles for android?
-* onslidingbegin?

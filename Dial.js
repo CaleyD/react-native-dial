@@ -41,7 +41,12 @@ export default function CreateDialComponent(NativeMethodsMixin) {
         onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
         onPanResponderTerminationRequest: (evt, gestureState) => true,
         onShouldBlockNativeResponder: (evt, gestureState) => true,
-        onPanResponderGrant: () => this.setState({active: true}),
+        onPanResponderGrant: () => {
+          this.setState({ active: true });
+          if(this.props.onSlidingBegin) {
+            this.props.onSlidingBegin();
+          }
+        },
         onPanResponderMove: (evt, gestureState) => {
           const point = {
             x: evt.nativeEvent.pageX - (this.layout.pageX + this.layout.width / 2),
@@ -149,6 +154,7 @@ export default function CreateDialComponent(NativeMethodsMixin) {
     value: PropTypes.number,
     onValueChange: PropTypes.func,
     onSlidingComplete: PropTypes.func
+    onSlidingBegin: PropTypes.func
   };
   Dial.defaultProps = {
   	minimumValue: -360,
