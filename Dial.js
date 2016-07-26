@@ -42,6 +42,12 @@ export default function CreateDialComponent(NativeMethodsMixin) {
         onPanResponderTerminationRequest: (evt, gestureState) => true,
         onShouldBlockNativeResponder: (evt, gestureState) => true,
         onPanResponderGrant: () => {
+          // need to measure again, just in case we're inside of a scrolling
+          // container and our position has changed
+          this.measure((x, y, width, height, pageX, pageY) => {
+            this.layout = {x, y, width, height, pageX, pageY};
+            console.log(this.layout);
+          });
           this.setState({ active: true });
           if(this.props.onSlidingBegin) {
             this.props.onSlidingBegin();
@@ -153,7 +159,7 @@ export default function CreateDialComponent(NativeMethodsMixin) {
     maximumValue: PropTypes.number,
     value: PropTypes.number,
     onValueChange: PropTypes.func,
-    onSlidingComplete: PropTypes.func
+    onSlidingComplete: PropTypes.func,
     onSlidingBegin: PropTypes.func
   };
   Dial.defaultProps = {
