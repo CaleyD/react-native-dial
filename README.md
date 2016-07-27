@@ -68,3 +68,5 @@ Pull requests are welcome.
   * maybe allow custom renderer?
 * ability to customize styles
 * more native looking default styles for android?
+* add `enabled` property
+* allow `value` prop to be updatable
