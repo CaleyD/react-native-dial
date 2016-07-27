@@ -39,21 +39,17 @@ export default function CreateDialComponent(NativeMethodsMixin) {
         onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
         onMoveShouldSetPanResponder: (evt, gestureState) => true,
         onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
-        onPanResponderTerminationRequest: (evt, gestureState) => true,
+        onPanResponderTerminationRequest: (evt, gestureState) => false, // false because of scrollview nesting issue
         onShouldBlockNativeResponder: (evt, gestureState) => true,
         onPanResponderGrant: () => {
-          // need to measure again, just in case we're inside of a scrolling
-          // container and our position has changed
-          this.measure((x, y, width, height, pageX, pageY) => {
-            this.layout = {x, y, width, height, pageX, pageY};
-            console.log(this.layout);
-          });
+          this.updateLayout();
           this.setState({ active: true });
           if(this.props.onSlidingBegin) {
             this.props.onSlidingBegin();
           }
         },
         onPanResponderMove: (evt, gestureState) => {
+          this.updateLayout(); // this is here because of annoying issues when nested in a scrollview
           const point = {
             x: evt.nativeEvent.pageX - (this.layout.pageX + this.layout.width / 2),
             y: evt.nativeEvent.pageY - (this.layout.pageY + this.layout.height / 2)
@@ -95,11 +91,13 @@ export default function CreateDialComponent(NativeMethodsMixin) {
       });
     },
     componentDidMount() {
-      requestAnimationFrame(()=>
-        this.measure((x, y, width, height, pageX, pageY) => {
-          this.layout = {x, y, width, height, pageX, pageY};
-          console.log(this.layout);
-        }));
+      requestAnimationFrame(()=>this.updateLayout());
+    },
+    updateLayout: function() {
+      this.measure((x, y, width, height, pageX, pageY) => {
+        this.layout = {x, y, width, height, pageX, pageY};
+        console.log(this.layout);
+      });
     },
     render: function() {
       const {trackWidth = 3, handleDiameter = 28} = this.props;
@@ -144,7 +142,6 @@ export default function CreateDialComponent(NativeMethodsMixin) {
                   rotate:  this.state.constrainedAngle % 360 + 'deg'
                 }]
               }}
-              onLayout={layout=>this._layout = layout.nativeEvent.layout}
               >
               <View style={handleStyle}
                 {...this._panResponder.panHandlers}/>
