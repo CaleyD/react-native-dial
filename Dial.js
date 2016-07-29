@@ -10,27 +10,42 @@ import { View, PanResponder } from 'react-native';
 //
 // We could probably hack out a solution that works with nested views and
 // layouts...
+
 export default function CreateDialComponent(NativeMethodsMixin) {
 
   const Dial = React.createClass({
     mixins: [NativeMethodsMixin],
     getInitialState: function() {
+      return this.getStateForValue(this.props.value);
+    },
+    componentWillReceiveProps(nextProps) {
+      if(this.props.value !== nextProps.value) {
+        this.setState(this.getStateForValue(nextProps.value))
+      }
+    },
+    getStateForValue(value) {
       return {
-    		angle: this.props.value,
-    		constrainedAngle: 0,
-    		previousAngle: 0,
-    		active: false
-  		};
+        angle: value,
+        previousAngle: value % 360,
+        active: false
+      };
+    },
+    getConstrainedAngle(angle) {
+      return Math.max(
+        Math.min(angle, this.props.maximumValue),
+        this.props.minimumValue
+      );
     },
     componentWillMount: function() {
       const endGesture = (evt, gestureState) => {
+        const constrainedAngle = this.getConstrainedAngle(this.state.angle);
         this.setState({
           active: false,
-          angle: this.state.constrainedAngle,
-          previousAngle: this.state.constrainedAngle % 360
+          angle: constrainedAngle,
+          previousAngle: constrainedAngle % 360
         });
         if(this.props.onSlidingComplete) {
-          this.props.onSlidingComplete(this.state.constrainedAngle);
+          this.props.onSlidingComplete(constrainedAngle);
         }
       };
 
@@ -56,11 +71,10 @@ export default function CreateDialComponent(NativeMethodsMixin) {
           };
           const currentAngle = getAngleDeg({x: 0, y: -1}, point);
           const newAngle = this.state.angle + getAngleDiff(this.state.previousAngle, currentAngle);
-          const constrainedAngle = getConstrainedAngle(newAngle, this.props);
+          const constrainedAngle = this.getConstrainedAngle(newAngle);
           this.setState({
             angle: newAngle,
-            previousAngle: currentAngle,
-            constrainedAngle: constrainedAngle
+            previousAngle: currentAngle
           });
       		if(this.props.onValueChange) {
    	      	this.props.onValueChange(constrainedAngle);
@@ -75,10 +89,6 @@ export default function CreateDialComponent(NativeMethodsMixin) {
               return diff - 360;
             }
             return diff;
-          }
-
-          function getConstrainedAngle(angle, {minimumValue, maximumValue}) {
-            return Math.max(Math.min(angle, maximumValue), minimumValue);
           }
 
           function getAngleDeg(v1, v2) {
@@ -100,13 +110,13 @@ export default function CreateDialComponent(NativeMethodsMixin) {
       });
     },
     render: function() {
-      const {trackWidth = 3, handleDiameter = 28} = this.props;
+      const {style, trackWidth = 3, handleDiameter = 28} = this.props;
+      const {active, angle} = this.state;
+      const constrainedAngle = this.getConstrainedAngle(angle);
       const defaultSize = 180;
-      let size = this.state.size ? Math.min(this.state.size.width, this.state.size.height) : 0;
-      if(this.state.size && size === 0) {
-        size = defaultSize;
-      }
-      size -= handleDiameter;
+      const size = this.state.size ?
+        Math.min(this.state.size.width, this.state.size.height) - handleDiameter :
+        defaultSize - handleDiameter;
       const handleColor = '#FFF';
 
       const handleStyle = {
@@ -124,27 +134,26 @@ export default function CreateDialComponent(NativeMethodsMixin) {
         left: size/2 - handleDiameter/2 - trackWidth,
         top: -1*handleDiameter/2 - trackWidth/2,
         transform: [{
-          rotate: (360 - this.state.constrainedAngle % 360) + 'deg'
+          rotate: (360 - constrainedAngle % 360) + 'deg'
         }]
       };
 
       return (
-        <View style={this.props.style} onLayout={evt=>this.setState({size:evt.nativeEvent.layout})}>
+        <View style={style} onLayout={evt=>this.setState({size:evt.nativeEvent.layout})}>
         	{size ?
             <View style={{
-           			margin: handleDiameter/2,
+           			margin: handleDiameter / 2,
                 width: size,
                 height: size,
-                borderRadius: size/2,
+                borderRadius: size / 2,
                 borderWidth: trackWidth,
-                borderColor: this.state.active ? '#DDD' : '#CCC',
+                borderColor: active ? '#DDD' : '#CCC',
                 transform: [{
-                  rotate:  this.state.constrainedAngle % 360 + 'deg'
+                  rotate: constrainedAngle % 360 + 'deg'
                 }]
               }}
               >
-              <View style={handleStyle}
-                {...this._panResponder.panHandlers}/>
+              <View style={handleStyle} {...this._panResponder.panHandlers}/>
             </View>
         	: null }
        	</View>
